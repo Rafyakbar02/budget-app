@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/card'
 import Divider from '@/components/divider'
@@ -65,39 +65,39 @@ export default function TransactionTab() {
             flex: 1,
         }}>
             <ScrollView style={{
-            paddingHorizontal: 20,
-        }}>
-            <Card>
-                <Text style={{
-                    fontWeight: '500',
-                    fontSize: 20
-                }}>Transaksi</Text>
-                <Divider />
-                {list.map((transact, i) => (
-                    <View key={i}>
-                        <Text style={{ marginBottom: 10, ...styles.text_small }}>{getDate(transact.date)}</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}>
-                            <View>
-                                <Text style={styles.text_medium}>{transact.location}</Text>
-                                <Text style={styles.text_small}>{transact.category}</Text>
+                paddingHorizontal: 20,
+            }}>
+                <Card>
+                    <Text style={{
+                        fontWeight: '500',
+                        fontSize: 20
+                    }}>Transaksi</Text>
+                    <Divider />
+                    {list.map((transact, i) => (
+                        <View key={i}>
+                            <Text style={{ marginBottom: 10, ...styles.text_small }}>{getDate(transact.date)}</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                                <View>
+                                    <Text style={styles.text_medium}>{transact.location}</Text>
+                                    <Text style={styles.text_small}>{transact.category}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{ ...styles.text_medium, textAlign: 'right', color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
+                                    <Text style={{ ...styles.text_small, textAlign: 'right' }}>{transact.account}</Text>
+                                </View>
                             </View>
-                            <View>
-                                <Text style={{ ...styles.text_medium, textAlign: 'right', color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
-                                <Text style={{ ...styles.text_small, textAlign: 'right' }}>{transact.account}</Text>
-                            </View>
+                            {i == list.length - 1 ? <></> : <Divider />}
                         </View>
-                        {i == list.length - 1 ? <></> : <Divider />}
-                    </View>
-                ))}
-            </Card>
-                
-            {/* Add Button */}
-            <Link href={"/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>
-                Tambah Transaksi
-            </Link>
+                    ))}
+                </Card>
+
+                {/* Add Button */}
+                <Link href={"/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>
+                    Tambah Transaksi
+                </Link>
 
                 {/* Gap margin for bottom of ScrollView */}
                 <View style={{ paddingVertical: 10 }}></View>

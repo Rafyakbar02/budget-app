@@ -1,7 +1,6 @@
-import { View, Text, Modal, Button, TextInput, StyleSheet, Alert } from 'react-native'
+import { View, Button, TextInput, StyleSheet, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { router, Stack } from 'expo-router'
-import Transaction from './(tabs)/transaction'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
 

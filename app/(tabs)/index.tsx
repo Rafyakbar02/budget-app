@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, StatusBar, Alert } from 'react-native'
+import { View, Text, ScrollView, Alert } from 'react-native'
 import Divider from '@/components/divider'
 import Card from '@/components/card'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import rupiah from '@/functions/rupiah'
 import { supabase } from '@/lib/supabase'
-import { Session, User } from '@supabase/supabase-js'
+import { User } from '@supabase/supabase-js'
 import { Link } from 'expo-router'
 
 interface Account {

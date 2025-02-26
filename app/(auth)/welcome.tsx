@@ -1,6 +1,5 @@
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
-import { Link, useRouter } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 
 export default function welcome() {

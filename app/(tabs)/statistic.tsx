@@ -1,6 +1,5 @@
-import { View, Text, StatusBar, Pressable, Alert } from 'react-native'
+import { View, Text, Pressable, Alert } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { supabase } from '@/lib/supabase'
 
 export default function StatisticTab() {
