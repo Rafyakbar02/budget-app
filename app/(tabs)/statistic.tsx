@@ -13,7 +13,7 @@ export default function StatisticTab() {
 
     return (
         <View style={{
-            backgroundColor: '#f7d488',
+            backgroundColor: '#grey',
             flex: 1
         }}>
             <View style={{ padding: 20 }}>

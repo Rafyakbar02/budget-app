@@ -16,6 +16,7 @@ interface Account {
 interface Category {
     type: string,
     amount: number,
+    count: number
 }
 
 export default function HomeTab() {
@@ -64,7 +65,7 @@ export default function HomeTab() {
     async function getCategory() {
         const { data, error } = await supabase
             .from('category_view')
-            .select('category, total_inflow, total_outflow')
+            .select('category, total_inflow, total_outflow, count')
             .eq('user_id', user?.id)
 
         if (error)
@@ -73,7 +74,8 @@ export default function HomeTab() {
         if (data) {
             const formattedData = data.map(row => ({
                 type: row.category,
-                amount: row.total_outflow - row.total_inflow
+                amount: row.total_outflow - row.total_inflow,
+                count: row.count
             }));
 
             formattedData.sort((a, b) => {
@@ -100,28 +102,80 @@ export default function HomeTab() {
     return (
         <View style={{
             flex: 1,
-            backgroundColor: '#f7d488'
+            backgroundColor: '#grey'
         }}>
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                {/* Total Uang */}
-                <Card>
-                    <Text>Total Uang</Text>
-                    <Text style={{
-                        marginTop: 5,
-                        fontSize: 30,
-                        fontWeight: '500'
-                    }}>{rupiah(totalBalance)}</Text>
-                    <Divider />
+                {/* Gap */}
+                <View style={{ paddingVertical: 10 }}></View>
 
-                    {/* Account List Mapping */}
-                    {accountList.map((acc, i) => (
+                {/* Categories */}
+                <Card>
+                    {/* Category List Mapping */}
+                    <Text style={{ fontSize: 14 }}>Total Pengeluaran</Text>
+                    <Text style={{
+                        marginTop: 4,
+                        fontSize: 30,
+                        fontWeight: 'bold'
+                    }}>{rupiah(totalSpend)}</Text>
+                </Card>
+
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    marginVertical: 16
+                }}>Kategori Pengeluaran</Text>
+
+                <Card>
+                    {/* Category List Mapping */}
+                    {categoryList.map((cat, i) => (
                         <View key={i}>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'
                             }}>
-                                <Text style={{ fontSize: 15, fontWeight: '500' }}>{acc.type + " " + acc.entity}</Text>
-                                <Text style={{ fontSize: 15, fontWeight: '500', textAlign: 'right' }}>{rupiah(acc.amount)}</Text>
+                                <View>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{cat.type}</Text>
+                                    <Text style={{ fontSize: 14, color: 'grey' }}>{cat.count + " Transaksi"}</Text>
+                                </View>
+                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(cat.amount)}</Text>
+                            </View>
+                            {i == categoryList.length - 1 ? <></> : <Divider />}
+                        </View>
+                    ))}
+                </Card>
+
+                {/* Gap */}
+                <View style={{ paddingVertical: 20 }}></View>
+
+                {/* Total Uang */}
+                <Card>
+                    <Text style={{ fontSize: 14 }}>Total Uang</Text>
+                    <Text style={{
+                        marginTop: 4,
+                        fontSize: 30,
+                        fontWeight: 'bold'
+                    }}>{rupiah(totalBalance)}</Text>
+                </Card>
+
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    marginVertical: 16,
+                }}>Rekening</Text>
+
+                <Card>
+                    {/* Account List Mapping */}
+                    {accountList.map((acc, i) => (
+                        <View key={i}>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                            }}>
+                                <View>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{acc.entity}</Text>
+                                    <Text style={{ fontSize: 14, color: 'grey' }}>{acc.type}</Text>
+                                </View>
+                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(acc.amount)}</Text>
                             </View>
                             {i == accountList.length - 1 ? <></> : <Divider />}
                         </View>
@@ -133,31 +187,6 @@ export default function HomeTab() {
                         Tambah Rekening
                     </Link>
 
-                </Card>
-
-                {/* Categories */}
-                <Card>
-                    {/* Category List Mapping */}
-                    <Text>Total Pengeluaran</Text>
-                    <Text style={{
-                        marginTop: 5,
-                        fontSize: 30,
-                        fontWeight: '500'
-                    }}>{rupiah(totalSpend)}</Text>
-                    <Divider />
-
-                    {categoryList.map((cat, i) => (
-                        <View key={i}>
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between'
-                            }}>
-                                <Text style={{ fontSize: 15, fontWeight: '500' }}>{cat.type}</Text>
-                                <Text style={{ fontSize: 15, fontWeight: '500', textAlign: 'right' }}>{rupiah(cat.amount)}</Text>
-                            </View>
-                            {i == categoryList.length - 1 ? <></> : <Divider />}
-                        </View>
-                    ))}
                 </Card>
 
                 {/* Gap margin for bottom of ScrollView */}

@@ -8,10 +8,9 @@ type Props = {
 export default function Card({ children }: Props) {
     const styles = StyleSheet.create({
         card: {
-            marginTop: 20,
-            borderRadius: 10,
+            borderRadius: 12,
             backgroundColor: 'white',
-            padding: 20,
+            padding: 14,
             // shadowColor: '#000000',
             // shadowOffset: { width: 0, height: 2 },
             // shadowOpacity: 0.2,

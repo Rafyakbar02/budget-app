@@ -43,6 +43,7 @@ export default function TransactionTab() {
             .select('date, type, location, category, amount, account')
             .eq('user_id', user?.id)
             .order('date', { ascending: false })
+            .range(0, 4)
 
         if (error)
             throw error
@@ -59,34 +60,41 @@ export default function TransactionTab() {
         return event.slice(0, index) + "," + event.slice(index)
     }
 
+    function formatText(text: string) {
+        if (text.length < 15) {
+            return text
+        }
+
+        return text.slice(0, 16) + "..."
+    }
+
     return (
         <View style={{
-            backgroundColor: '#f7d488',
+            backgroundColor: '#grey',
             flex: 1,
         }}>
-            <ScrollView style={{
-                paddingHorizontal: 20,
-            }}>
+            <ScrollView style={{ paddingHorizontal: 20 }}>
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    marginVertical: 16
+                }}>Transaksi</Text>
+
                 <Card>
-                    <Text style={{
-                        fontWeight: '500',
-                        fontSize: 20
-                    }}>Transaksi</Text>
-                    <Divider />
                     {list.map((transact, i) => (
                         <View key={i}>
-                            <Text style={{ marginBottom: 10, ...styles.text_small }}>{getDate(transact.date)}</Text>
+                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'
                             }}>
                                 <View>
-                                    <Text style={styles.text_medium}>{transact.location}</Text>
-                                    <Text style={styles.text_small}>{transact.category}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{formatText(transact.location)}</Text>
+                                    <Text style={{ fontSize: 14, color: 'grey' }}>{transact.category}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{ ...styles.text_medium, textAlign: 'right', color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
-                                    <Text style={{ ...styles.text_small, textAlign: 'right' }}>{transact.account}</Text>
+                                    <Text style={{ fontSize: 16, textAlign: 'right', marginBottom: 2, color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
+                                    <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
                             {i == list.length - 1 ? <></> : <Divider />}
@@ -105,12 +113,3 @@ export default function TransactionTab() {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    text_medium: {
-        fontSize: 15, fontWeight: '500', marginBottom: 5
-    },
-    text_small: {
-        fontSize: 12
-    }
-})
