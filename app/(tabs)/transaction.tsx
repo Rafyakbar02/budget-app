@@ -63,8 +63,9 @@ export default function TransactionTab() {
         <View style={{
             backgroundColor: '#f7d488',
             flex: 1,
+        }}>
+            <ScrollView style={{
             paddingHorizontal: 20,
-            paddingBottom: 20,
         }}>
             <Card>
                 <Text style={{
@@ -89,15 +90,18 @@ export default function TransactionTab() {
                             </View>
                         </View>
                         {i == list.length - 1 ? <></> : <Divider />}
-
                     </View>
                 ))}
             </Card>
-
+                
             {/* Add Button */}
             <Link href={"/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>
                 Tambah Transaksi
             </Link>
+
+                {/* Gap margin for bottom of ScrollView */}
+                <View style={{ paddingVertical: 10 }}></View>
+            </ScrollView>
         </View>
     )
 }

@@ -103,7 +103,7 @@ export default function HomeTab() {
             flex: 1,
             backgroundColor: '#f7d488'
         }}>
-            <ScrollView style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
+            <ScrollView style={{ paddingHorizontal: 20 }}>
                 {/* Total Uang */}
                 <Card>
                     <Text>Total Uang</Text>
@@ -160,6 +160,9 @@ export default function HomeTab() {
                         </View>
                     ))}
                 </Card>
+
+                {/* Gap margin for bottom of ScrollView */}
+                <View style={{ paddingVertical: 10 }}></View>
             </ScrollView>
 
         </View>
