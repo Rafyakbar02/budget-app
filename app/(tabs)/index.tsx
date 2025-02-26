@@ -41,6 +41,7 @@ export default function HomeTab() {
             .from('account')
             .select('type, entity, amount')
             .eq('user_id', user?.id)
+            .order('amount', { ascending: false })
 
         if (error)
             throw error

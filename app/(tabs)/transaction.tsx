@@ -42,6 +42,7 @@ export default function TransactionTab() {
             .from('transaction')
             .select('date, type, location, category, amount, account')
             .eq('user_id', user?.id)
+            .order('date', { ascending: false })
 
         if (error)
             throw error
