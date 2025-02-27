@@ -22,10 +22,16 @@ export default function TransactionModal() {
                 Alert.alert("Error Accessing User")
             }
         })
-    }, [])
+    }, [user])
 
     async function addTransaction() {
         setLoading(true)
+
+        if (!type || !place || !category || !amount || !amount || !account) {
+            Alert.alert("Fill the info")
+            setLoading(false)
+            return
+        }
 
         if (!user) {
             Alert.alert("Error Accessing User")
@@ -36,7 +42,7 @@ export default function TransactionModal() {
         const { error } = await supabase
             .from('transaction')
             .insert([
-                { user_id: user.id, date: new Date(), type: type, location: place, category: category, amount: Number(amount), account: account }
+                { user_id: user?.id, date: new Date(), type: type, location: place, category: category, amount: Number(amount), account: account }
             ])
             .select()
 
@@ -63,7 +69,7 @@ export default function TransactionModal() {
     }
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Stack.Screen
                 options={{
                     headerLeft: () => (
@@ -82,15 +88,27 @@ export default function TransactionModal() {
                     )
                 }}
             />
-            <View style={{
-                padding: 20
-            }}>
-                <TextInput style={styles.input} placeholder='Type' placeholderTextColor={"grey"} value={type} onChangeText={setType} />
-                <TextInput style={styles.input} placeholder='Location' placeholderTextColor={"grey"} value={place} onChangeText={setPlace} />
-                <TextInput style={styles.input} placeholder='Category' placeholderTextColor={"grey"} value={category} onChangeText={setCategory} />
-                <TextInput style={styles.input} placeholder='Amount' placeholderTextColor={"grey"} value={amount} onChangeText={amountChange} inputMode='numeric' />
-                <TextInput style={styles.input} placeholder='Account' placeholderTextColor={"grey"} value={account} onChangeText={setAccount} />
+            <View style={{ padding: 20 }}>
+                <View style={{
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    backgroundColor: 'white'
+                }}>
+                    {/* Transaction Type */}
+                    <TextInput style={styles.input} placeholder='Type' placeholderTextColor={"grey"} value={type} onChangeText={setType} />
 
+                    {/* Transaction Payee */}
+                    <TextInput style={styles.input} placeholder='Location' placeholderTextColor={"grey"} value={place} onChangeText={setPlace} />
+
+                    {/* Transaction Category */}
+                    <TextInput style={styles.input} placeholder='Category' placeholderTextColor={"grey"} value={category} onChangeText={setCategory} />
+
+                    {/* Transaction Amount */}
+                    <TextInput style={styles.input} placeholder='Amount' placeholderTextColor={"grey"} value={amount} onChangeText={amountChange} inputMode='numeric' />
+
+                    {/* Transaction Account */}
+                    <TextInput style={{ height: 50, padding: 10 }} placeholder='Account' placeholderTextColor={"grey"} value={account} onChangeText={setAccount} />
+                </View>
             </View>
         </View>
     )
@@ -98,9 +116,9 @@ export default function TransactionModal() {
 
 const styles = StyleSheet.create({
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
+        height: 50,
+        borderBottomColor: 'lightgrey',
+        borderBottomWidth: 1,
         padding: 10,
     },
 });
