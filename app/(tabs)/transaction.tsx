@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Alert, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/card'
 import Divider from '@/components/divider'
@@ -80,9 +80,19 @@ export default function TransactionTab() {
                     marginVertical: 16
                 }}>Transaksi</Text>
 
-                <Card>
+                <View style={{
+                    borderRadius: 12,
+                    overflow: 'hidden'
+                }}>
                     {list.map((transact, i) => (
-                        <View key={i}>
+                        <Pressable
+                            key={i}
+                            style={({ pressed }) => [
+                                { padding: 14 },
+                                i == list.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                { backgroundColor: pressed ? 'lightgrey' : "white" }
+                            ]}
+                        >
                             <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
                             <View style={{
                                 flexDirection: 'row',
@@ -97,10 +107,9 @@ export default function TransactionTab() {
                                     <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
-                            {i == list.length - 1 ? <></> : <Divider />}
-                        </View>
+                        </Pressable>
                     ))}
-                </Card>
+                </View>
 
                 {/* Add Button */}
                 <Link href={"/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>

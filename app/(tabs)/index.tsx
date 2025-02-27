@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Alert } from 'react-native'
+import { View, Text, ScrollView, Alert, Pressable } from 'react-native'
 import Divider from '@/components/divider'
 import Card from '@/components/card'
 import React, { useEffect, useState } from 'react'
@@ -125,10 +125,20 @@ export default function HomeTab() {
                     marginVertical: 16
                 }}>Kategori Pengeluaran</Text>
 
-                <Card>
+                <View style={{
+                    borderRadius: 12,
+                    overflow: 'hidden'
+                }}>
                     {/* Category List Mapping */}
                     {categoryList.map((cat, i) => (
-                        <View key={i}>
+                        <Pressable
+                            key={i}
+                            style={({ pressed }) => [
+                                { padding: 14 },
+                                i == categoryList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                { backgroundColor: pressed ? 'lightgrey' : "white" }
+                            ]}
+                        >
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'
@@ -139,10 +149,9 @@ export default function HomeTab() {
                                 </View>
                                 <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(cat.amount)}</Text>
                             </View>
-                            {i == categoryList.length - 1 ? <></> : <Divider />}
-                        </View>
+                        </Pressable>
                     ))}
-                </Card>
+                </View>
 
                 {/* Gap */}
                 <View style={{ paddingVertical: 20 }}></View>
@@ -163,10 +172,20 @@ export default function HomeTab() {
                     marginVertical: 16,
                 }}>Rekening</Text>
 
-                <Card>
+                <View style={{
+                    borderRadius: 12,
+                    overflow: 'hidden'
+                }}>
                     {/* Account List Mapping */}
                     {accountList.map((acc, i) => (
-                        <View key={i}>
+                        <Pressable
+                            key={i}
+                            style={({ pressed }) => [
+                                { padding: 14 },
+                                i == accountList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                { backgroundColor: pressed ? 'lightgrey' : "white" }
+                            ]}
+                        >
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
@@ -177,17 +196,16 @@ export default function HomeTab() {
                                 </View>
                                 <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(acc.amount)}</Text>
                             </View>
-                            {i == accountList.length - 1 ? <></> : <Divider />}
-                        </View>
+                        </Pressable>
                     ))}
 
                     {/* Add Account Button */}
-                    <Divider />
+                    {/* <Divider />
                     <Link href={"/bankModal"} style={{ fontWeight: 'bold', color: 'blue', textAlign: 'center' }}>
                         Tambah Rekening
-                    </Link>
+                    </Link> */}
 
-                </Card>
+                </View>
 
                 {/* Gap margin for bottom of ScrollView */}
                 <View style={{ paddingVertical: 10 }}></View>
