@@ -1,11 +1,10 @@
 import { View, Text, ScrollView, Alert, Pressable } from 'react-native'
-import Divider from '@/components/divider'
 import Card from '@/components/card'
 import React, { useEffect, useState } from 'react'
 import rupiah from '@/functions/rupiah'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
-import { Link } from 'expo-router'
+import { router } from 'expo-router'
 
 interface Account {
     type: string,
@@ -138,6 +137,10 @@ export default function HomeTab() {
                                 i == categoryList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
+                            onPress={() => router.push({
+                                pathname: '/category/[id]',
+                                params: { id: user?.id as string, type: cat.type }
+                            })}
                         >
                             <View style={{
                                 flexDirection: 'row',
