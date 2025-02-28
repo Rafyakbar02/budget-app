@@ -10,7 +10,7 @@ import { User } from '@supabase/supabase-js'
 interface Transaction {
     date: string,
     type: string,
-    location: string
+    payee: string
     category: string,
     amount: number,
     account: string
@@ -39,8 +39,8 @@ export default function TransactionTab() {
 
     async function getTransaction() {
         const { data, error } = await supabase
-            .from('transaction')
-            .select('date, type, location, category, amount, account')
+            .from('transaction_view')
+            .select('date, type, payee, category, amount, account')
             .eq('user_id', user?.id)
             .order('date', { ascending: false })
             .range(0, 4)
@@ -51,21 +51,6 @@ export default function TransactionTab() {
         if (data) {
             setList(data)
         }
-    }
-
-    function getDate(date: string) {
-        let event = new Date(date).toDateString().substring(4)
-        let index = event.length - 5
-
-        return event.slice(0, index) + "," + event.slice(index)
-    }
-
-    function formatText(text: string) {
-        if (text.length < 15) {
-            return text
-        }
-
-        return text.slice(0, 16) + "..."
     }
 
     return (
@@ -93,17 +78,17 @@ export default function TransactionTab() {
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
                         >
-                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
+                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{transact.date}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'
                             }}>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{formatText(transact.location)}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{transact.payee}</Text>
                                     <Text style={{ fontSize: 14, color: 'grey' }}>{transact.category}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, textAlign: 'right', marginBottom: 2, color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
+                                    <Text style={{ fontSize: 16, textAlign: 'right', marginBottom: 2, color: transact.type == 'inflow' ? 'green' : "red" }}>{transact.type == 'inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
                                     <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
@@ -112,7 +97,7 @@ export default function TransactionTab() {
                 </View>
 
                 {/* Add Button */}
-                <Link href={"/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>
+                <Link href={"/modal/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>
                     Tambah Transaksi
                 </Link>
 

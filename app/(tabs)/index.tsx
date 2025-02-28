@@ -7,15 +7,15 @@ import { User } from '@supabase/supabase-js'
 import { router } from 'expo-router'
 
 interface Account {
-    type: string,
-    entity: string,
-    amount: number,
+    account_name: string,
+    bank_name: string,
+    balance: number,
 }
 
 interface Category {
-    type: string,
+    name: string,
     amount: number,
-    count: number
+    num_of_transaction: number
 }
 
 export default function HomeTab() {
@@ -45,10 +45,10 @@ export default function HomeTab() {
 
     async function getAccount() {
         const { data, error } = await supabase
-            .from('account')
-            .select('type, entity, amount')
+            .from('accounts')
+            .select('account_name, bank_name, balance')
             .eq('user_id', user?.id)
-            .order('amount', { ascending: false })
+            .order('balance', { ascending: false })
 
         if (error)
             throw error
@@ -56,15 +56,15 @@ export default function HomeTab() {
         if (data) {
             setAccountList(data)
 
-            const sum = data.reduce((acc, account) => acc + account.amount, 0)
+            const sum = data.reduce((acc, account) => acc + account.balance, 0)
             setTotalBalance(sum)
         }
     }
 
     async function getCategory() {
         const { data, error } = await supabase
-            .from('category_view')
-            .select('category, total_inflow, total_outflow, count')
+            .from('category_general_view')
+            .select('category, total_inflow, total_outflow, num_of_transaction')
             .eq('user_id', user?.id)
 
         if (error)
@@ -72,9 +72,9 @@ export default function HomeTab() {
 
         if (data) {
             const formattedData = data.map(row => ({
-                type: row.category,
+                name: row.category,
                 amount: row.total_outflow - row.total_inflow,
-                count: row.count
+                num_of_transaction: row.num_of_transaction
             }));
 
             formattedData.sort((a, b) => {
@@ -129,7 +129,7 @@ export default function HomeTab() {
                     overflow: 'hidden'
                 }}>
                     {/* Category List Mapping */}
-                    {categoryList.map((cat, i) => (
+                    {categoryList.map((category, i) => (
                         <Pressable
                             key={i}
                             style={({ pressed }) => [
@@ -139,7 +139,7 @@ export default function HomeTab() {
                             ]}
                             onPress={() => router.push({
                                 pathname: '/category/[id]',
-                                params: { id: user?.id as string, type: cat.type }
+                                params: { id: user?.id as string, category: category.name }
                             })}
                         >
                             <View style={{
@@ -147,10 +147,10 @@ export default function HomeTab() {
                                 justifyContent: 'space-between'
                             }}>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{cat.type}</Text>
-                                    <Text style={{ fontSize: 14, color: 'grey' }}>{cat.count + " Transaksi"}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{category.name}</Text>
+                                    <Text style={{ fontSize: 14, color: 'grey' }}>{category.num_of_transaction + " Transaksi"}</Text>
                                 </View>
-                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(cat.amount)}</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(category.amount)}</Text>
                             </View>
                         </Pressable>
                     ))}
@@ -194,17 +194,17 @@ export default function HomeTab() {
                                 justifyContent: 'space-between',
                             }}>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{acc.entity}</Text>
-                                    <Text style={{ fontSize: 14, color: 'grey' }}>{acc.type}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>{acc.bank_name}</Text>
+                                    <Text style={{ fontSize: 14, color: 'grey' }}>{acc.account_name}</Text>
                                 </View>
-                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(acc.amount)}</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(acc.balance)}</Text>
                             </View>
                         </Pressable>
                     ))}
 
                     {/* Add Account Button */}
                     {/* <Divider />
-                    <Link href={"/bankModal"} style={{ fontWeight: 'bold', color: 'blue', textAlign: 'center' }}>
+                    <Link href={"/modal/bankModal"} style={{ fontWeight: 'bold', color: 'blue', textAlign: 'center' }}>
                         Tambah Rekening
                     </Link> */}
 

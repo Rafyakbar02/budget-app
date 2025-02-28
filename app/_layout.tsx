@@ -7,14 +7,14 @@ export default function RootLayout() {
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 			<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 			<Stack.Screen
-				name="transactionModal"
+				name="modal/transactionModal"
 				options={{
 					presentation: 'modal',
 					title: "Transaksi",
 				}}
 			/>
 			<Stack.Screen
-				name="bankModal"
+				name="modal/bankModal"
 				options={{
 					presentation: 'modal',
 					title: "bank",

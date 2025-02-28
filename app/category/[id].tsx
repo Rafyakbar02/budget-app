@@ -8,14 +8,14 @@ import { supabase } from '@/lib/supabase';
 interface Transaction {
     date: string,
     type: string,
-    location: string
+    payee: string
     category: string,
     amount: number,
     account: string
 }
 
 export default function CategoryDetail() {
-    const { id, type } = useLocalSearchParams();
+    const { id, category } = useLocalSearchParams();
 
     const [list, setList] = useState<Transaction[]>([])
     const [count, setCount] = useState(0)
@@ -28,10 +28,10 @@ export default function CategoryDetail() {
 
     async function getTransaction() {
         const { data, error } = await supabase
-            .from('transaction')
-            .select('date, type, location, category, amount, account')
+            .from('transaction_view')
+            .select('date, type, payee, category, amount, account')
             .eq('user_id', id)
-            .eq('category', type)
+            .eq('category', category)
             .order('date', { ascending: false })
 
         if (error)
@@ -44,16 +44,16 @@ export default function CategoryDetail() {
 
     async function getCategoryInfo() {
         const { data, error } = await supabase
-            .from('category_view')
-            .select('category, total_inflow, total_outflow, count')
+            .from('category_general_view')
+            .select('category, total_inflow, total_outflow, num_of_transaction')
             .eq('user_id', id)
-            .eq('category', type)
+            .eq('category', category)
 
         if (error)
             throw error
 
         if (data) {
-            setCount(data[0].count)
+            setCount(data[0].num_of_transaction)
             setAmount(data[0].total_outflow - data[0].total_inflow)
         }
 
@@ -82,7 +82,7 @@ export default function CategoryDetail() {
                     fontWeight: 'bold',
                     fontSize: 30,
                     marginTop: 16
-                }}>{type}</Text>
+                }}>{category}</Text>
 
                 <Text style={{
                     marginTop: 4,
@@ -135,12 +135,12 @@ export default function CategoryDetail() {
                                         textOverflow: 'ellipsis'
                                     }}
                                     >
-                                        {transact.location}
+                                        {transact.payee}
                                     </Text>
                                     <Text style={{ fontSize: 14, color: 'grey' }}>{transact.category}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, textAlign: 'right', marginBottom: 2, color: transact.type == 'Inflow' ? 'green' : "red" }}>{transact.type == 'Inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
+                                    <Text style={{ fontSize: 16, textAlign: 'right', marginBottom: 2, color: transact.type == 'inflow' ? 'green' : "red" }}>{transact.type == 'inflow' ? "+ " + rupiah(transact.amount) : "- " + rupiah(transact.amount)}</Text>
                                     <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
