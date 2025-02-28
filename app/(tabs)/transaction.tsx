@@ -53,6 +53,14 @@ export default function TransactionTab() {
         }
     }
 
+    function getDate(date: string) {
+        let event = new Date(date).toDateString().substring(4)
+        let index = event.length - 5
+
+        return event.slice(0, index) + "," + event.slice(index)
+    }
+
+
     return (
         <View style={{
             backgroundColor: '#grey',
@@ -78,7 +86,7 @@ export default function TransactionTab() {
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
                         >
-                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{transact.date}</Text>
+                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'

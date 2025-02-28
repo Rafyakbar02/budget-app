@@ -188,6 +188,10 @@ export default function HomeTab() {
                                 i == accountList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
+                            onPress={() => router.push({
+                                pathname: '/account/[id]',
+                                params: { id: user?.id as string, account: acc.account_name }
+                            })}
                         >
                             <View style={{
                                 flexDirection: 'row',
