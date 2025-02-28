@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Alert, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import rupiah from '@/functions/rupiah'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
@@ -22,8 +22,9 @@ export default function HomeTab() {
     const [user, setUser] = useState<User | null>(null)
     const [accountList, setAccountList] = useState<Account[]>([])
     const [categoryList, setCategoryList] = useState<Category[]>([])
-    const [totalBalance, setTotalBalance] = useState(0)
-    const [totalSpend, setTotalSpend] = useState(0)
+
+    const totalBalance = useMemo(() => getTotalBalance(accountList), [accountList])
+    const totalSpend = useMemo(() => getTotalSpend(categoryList), [categoryList])
 
     // Check if user is authenticated
     useEffect(() => {
@@ -43,6 +44,9 @@ export default function HomeTab() {
         }
     }, [user]) // runs only when 'user' changes
 
+    /**
+     * Fetch user bank accounts, load to accountList and calculate sum of total balance
+     */
     async function getAccount() {
         const { data, error } = await supabase
             .from('accounts')
@@ -55,12 +59,25 @@ export default function HomeTab() {
 
         if (data) {
             setAccountList(data)
-
-            const sum = data.reduce((acc, account) => acc + account.balance, 0)
-            setTotalBalance(sum)
         }
     }
 
+    /**
+     * Calculate total balance of user bank accounts
+     */
+    function getTotalBalance(data: Account[]): number {
+        if (data.length == 0) {
+            return 0
+        }
+
+        const sum = data.reduce((acc, account) => acc + account.balance, 0)
+
+        return sum
+    }
+
+    /**
+     * Fetch user bank accounts, load to accountList and calculate sum of total balance
+     */
     async function getCategory() {
         const { data, error } = await supabase
             .from('category_general_view')
@@ -90,12 +107,20 @@ export default function HomeTab() {
             })
 
             setCategoryList(formattedData)
+        }
+    }
 
-            const sum = formattedData.reduce((acc, cat) => acc + cat.amount, 0)
-            setTotalSpend(sum)
+    /**
+     * Calculate users total spending
+     */
+    function getTotalSpend(data: Category[]): number {
+        if (data.length == 0) {
+            return 0
         }
 
+        const sum = data.reduce((acc, category) => acc + category.amount, 0)
 
+        return sum
     }
 
     return (

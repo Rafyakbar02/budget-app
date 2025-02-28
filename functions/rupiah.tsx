@@ -1,4 +1,9 @@
-export default function rupiah(number: number) {
+/**
+ * Convert number or integer into IDR currency format 
+ * @param number 
+ * @returns String formatted to IDR
+ */
+export default function rupiah(number: number): string {
     const curr = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR"
