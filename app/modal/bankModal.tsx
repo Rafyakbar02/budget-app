@@ -82,7 +82,10 @@ export default function BankModal() {
                 }}
             />
             <View style={{
-                padding: 20
+                borderRadius: 12,
+                overflow: 'hidden',
+                backgroundColor: 'white',
+                marginBottom: 10
             }}>
                 <TextInput style={styles.input} placeholder='Type' placeholderTextColor={"grey"} value={type} onChangeText={setType} />
                 <TextInput style={styles.input} placeholder='Entity' placeholderTextColor={"grey"} value={entity} onChangeText={setEntity} />
@@ -95,9 +98,9 @@ export default function BankModal() {
 
 const styles = StyleSheet.create({
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
+        height: 50,
+        borderBottomColor: 'lightgrey',
+        borderBottomWidth: 1,
         padding: 10,
     },
 });
