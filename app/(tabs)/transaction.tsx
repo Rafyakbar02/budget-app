@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Alert, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Card from '@/components/card'
+import Card from '@/components/cards/card'
 import Divider from '@/components/divider'
 import rupiah from '@/functions/rupiah'
 import { Link } from 'expo-router'

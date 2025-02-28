@@ -1,9 +1,9 @@
 import { View, Text, Button, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
-import Card from '@/components/card';
 import rupiah from '@/functions/rupiah';
 import { supabase } from '@/lib/supabase';
+import InfoCard from '@/components/cards/infoCard';
 
 interface Transaction {
     date: string,
@@ -96,26 +96,14 @@ export default function AccountDetail() {
                     {count} Transaksi
                 </Text>
 
-                <Card>
-                    <Text style={{ fontSize: 14 }}>Saldo Rekening</Text>
-                    <Text style={{
-                        marginTop: 4,
-                        fontSize: 30,
-                        fontWeight: 'bold'
-                    }}>{rupiah(balance)}</Text>
-                </Card>
+                {/* Total Balance Stat */}
+                <InfoCard label='Saldo Rekening' value={rupiah(balance)} />
 
                 {/* Gap */}
                 <View style={{ paddingVertical: 10 }}></View>
 
-                <Card>
-                    <Text style={{ fontSize: 14 }}>Total Pengeluaran</Text>
-                    <Text style={{
-                        marginTop: 4,
-                        fontSize: 30,
-                        fontWeight: 'bold'
-                    }}>{rupiah(amount)}</Text>
-                </Card>
+                {/* Total Spend Stat */}
+                <InfoCard label='Total Pengeluaran' value={rupiah(amount)} />
 
                 {list.length > 0 &&
                     <>

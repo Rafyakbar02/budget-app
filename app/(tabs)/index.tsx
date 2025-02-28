@@ -1,10 +1,10 @@
 import { View, Text, ScrollView, Alert, Pressable } from 'react-native'
-import Card from '@/components/card'
 import React, { useEffect, useState } from 'react'
 import rupiah from '@/functions/rupiah'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
 import { router } from 'expo-router'
+import InfoCard from '@/components/cards/infoCard'
 
 interface Account {
     account_name: string,
@@ -107,16 +107,8 @@ export default function HomeTab() {
                 {/* Gap */}
                 <View style={{ paddingVertical: 10 }}></View>
 
-                {/* Categories */}
-                <Card>
-                    {/* Category List Mapping */}
-                    <Text style={{ fontSize: 14 }}>Total Pengeluaran</Text>
-                    <Text style={{
-                        marginTop: 4,
-                        fontSize: 30,
-                        fontWeight: 'bold'
-                    }}>{rupiah(totalSpend)}</Text>
-                </Card>
+                {/* Total Spend Stat */}
+                <InfoCard label={"Total Pengeluaran"} value={rupiah(totalSpend)} />
 
                 <Text style={{
                     fontWeight: 'bold',
@@ -159,15 +151,8 @@ export default function HomeTab() {
                 {/* Gap */}
                 <View style={{ paddingVertical: 20 }}></View>
 
-                {/* Total Uang */}
-                <Card>
-                    <Text style={{ fontSize: 14 }}>Total Uang</Text>
-                    <Text style={{
-                        marginTop: 4,
-                        fontSize: 30,
-                        fontWeight: 'bold'
-                    }}>{rupiah(totalBalance)}</Text>
-                </Card>
+                {/* Total Balance Stat */}
+                <InfoCard label='Total Uang' value={rupiah(totalBalance)} />
 
                 <Text style={{
                     fontWeight: 'bold',
