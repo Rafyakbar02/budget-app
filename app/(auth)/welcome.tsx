@@ -67,24 +67,30 @@ export default function welcome() {
                 Atur uang jadi lebih gampang!
             </Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder='email@address.com'
-                placeholderTextColor={'grey'}
-                autoCapitalize='none'
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder='Password'
-                placeholderTextColor={'grey'}
-                autoCapitalize='none'
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                secureTextEntry={true}
-            />
+            <View style={{
+                borderRadius: 12,
+                overflow: 'hidden',
+                backgroundColor: 'white',
+                marginBottom: 10
+            }}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='email@address.com'
+                    placeholderTextColor={'grey'}
+                    autoCapitalize='none'
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                />
+                <TextInput
+                    style={{ height: 50, padding: 10 }}
+                    placeholder='Password'
+                    placeholderTextColor={'grey'}
+                    autoCapitalize='none'
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry={true}
+                />
+            </View>
 
             <Pressable
                 style={{
@@ -119,11 +125,10 @@ export default function welcome() {
 
 const styles = StyleSheet.create({
     input: {
-        height: 40,
+        height: 50,
         width: 250,
-        marginBottom: 10,
-        borderWidth: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgrey',
         padding: 10,
-        backgroundColor: 'white'
     },
 });
