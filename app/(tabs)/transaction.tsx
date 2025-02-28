@@ -6,6 +6,7 @@ import rupiah from '@/functions/rupiah'
 import { Link } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
+import date from '@/functions/date'
 
 interface Transaction {
     date: string,
@@ -53,14 +54,6 @@ export default function TransactionTab() {
         }
     }
 
-    function getDate(date: string) {
-        let event = new Date(date).toDateString().substring(4)
-        let index = event.length - 5
-
-        return event.slice(0, index) + "," + event.slice(index)
-    }
-
-
     return (
         <View style={{
             backgroundColor: '#grey',
@@ -86,7 +79,7 @@ export default function TransactionTab() {
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
                         >
-                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
+                            <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{date(transact.date)}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between'

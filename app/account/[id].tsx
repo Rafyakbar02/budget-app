@@ -4,6 +4,7 @@ import { router, Stack, useLocalSearchParams } from 'expo-router'
 import rupiah from '@/functions/rupiah';
 import { supabase } from '@/lib/supabase';
 import InfoCard from '@/components/cards/infoCard';
+import date from '@/functions/date';
 
 interface Transaction {
     date: string,
@@ -59,13 +60,6 @@ export default function AccountDetail() {
             setBalance(data[0].balance)
         }
 
-    }
-
-    function getDate(date: string) {
-        let event = new Date(date).toDateString().substring(4)
-        let index = event.length - 5
-
-        return event.slice(0, index) + "," + event.slice(index)
     }
 
     return (
@@ -126,7 +120,7 @@ export default function AccountDetail() {
                                         { backgroundColor: pressed ? 'lightgrey' : "white" }
                                     ]}
                                 >
-                                    <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{getDate(transact.date)}</Text>
+                                    <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{date(transact.date)}</Text>
                                     <View style={{
                                         flexDirection: 'row',
                                         justifyContent: 'space-between'
