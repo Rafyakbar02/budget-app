@@ -1,66 +1,17 @@
 import { View, Text, Button, ScrollView, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import rupiah from '@/functions/rupiah';
-import { supabase } from '@/lib/supabase';
 import InfoCard from '@/components/cards/infoCard';
 import date from '@/functions/date';
-
-interface Transaction {
-    date: string,
-    type: string,
-    payee: string
-    category: string,
-    amount: number,
-    account: string
-}
+import { useAccountTransactions } from '@/hooks/useAccountTransactions';
+import { useAccountInfo } from '@/hooks/useAccountInfo';
 
 export default function AccountDetail() {
     const { id, account } = useLocalSearchParams();
 
-    const [list, setList] = useState<Transaction[]>([])
-    const [count, setCount] = useState(0)
-    const [amount, setAmount] = useState(0)
-    const [balance, setBalance] = useState(0)
-
-    useEffect(() => {
-        getTransaction()
-        getAccountInfo()
-    }, [id]) // runs when 'id' changes
-
-    async function getTransaction() {
-        const { data, error } = await supabase
-            .from('transaction_view')
-            .select('date, type, payee, category, amount, account')
-            .eq('user_id', id)
-            .eq('account', account)
-            .order('date', { ascending: false })
-
-        if (error)
-            throw error
-
-        if (data) {
-            setList(data)
-        }
-    }
-
-    async function getAccountInfo() {
-        const { data, error } = await supabase
-            .from('account_general_view')
-            .select('total_inflow, total_outflow, num_of_transaction, balance')
-            .eq('user_id', id)
-            .eq('account_name', account)
-
-        if (error)
-            throw error
-
-        if (data) {
-            setCount(data[0].num_of_transaction)
-            setAmount(data[0].total_outflow - data[0].total_inflow)
-            setBalance(data[0].balance)
-        }
-
-    }
+    const transactionList = useAccountTransactions(id, account)
+    const { transactionCount, amount, balance } = useAccountInfo(id, account)
 
     return (
         <View style={{ flex: 1 }}>
@@ -87,7 +38,7 @@ export default function AccountDetail() {
                     fontSize: 16,
                     color: 'grey'
                 }}>
-                    {count} Transaksi
+                    {transactionCount} Transaksi
                 </Text>
 
                 {/* Total Balance Stat */}
@@ -99,7 +50,7 @@ export default function AccountDetail() {
                 {/* Total Spend Stat */}
                 <InfoCard label='Total Pengeluaran' value={rupiah(amount)} />
 
-                {list.length > 0 &&
+                {transactionList.length > 0 &&
                     <>
                         <Text style={{
                             fontWeight: 'bold',
@@ -111,12 +62,12 @@ export default function AccountDetail() {
                             borderRadius: 12,
                             overflow: 'hidden'
                         }}>
-                            {list.map((transact, i) => (
+                            {transactionList.map((transact, i) => (
                                 <Pressable
                                     key={i}
                                     style={({ pressed }) => [
                                         { padding: 14 },
-                                        i == list.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                        i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                                         { backgroundColor: pressed ? 'lightgrey' : "white" }
                                     ]}
                                 >

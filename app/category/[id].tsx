@@ -1,65 +1,17 @@
 import { View, Text, Button, ScrollView, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
-import Card from '@/components/cards/card';
 import rupiah from '@/functions/rupiah';
-import { supabase } from '@/lib/supabase';
 import InfoCard from '@/components/cards/infoCard';
 import date from '@/functions/date';
-
-interface Transaction {
-    date: string,
-    type: string,
-    payee: string
-    category: string,
-    amount: number,
-    account: string
-}
+import { useCategoryTransactions } from '@/hooks/useCategoryTransactions';
+import { useCategoryInfo } from '@/hooks/useCategoryInfo';
 
 export default function CategoryDetail() {
     const { id, category } = useLocalSearchParams();
 
-    const [list, setList] = useState<Transaction[]>([])
-    const [count, setCount] = useState(0)
-    const [amount, setAmount] = useState(0)
-
-    useEffect(() => {
-        getTransaction()
-        getCategoryInfo()
-    }, [id]) // runs when 'id' changes
-
-    async function getTransaction() {
-        const { data, error } = await supabase
-            .from('transaction_view')
-            .select('date, type, payee, category, amount, account')
-            .eq('user_id', id)
-            .eq('category', category)
-            .order('date', { ascending: false })
-
-        if (error)
-            throw error
-
-        if (data) {
-            setList(data)
-        }
-    }
-
-    async function getCategoryInfo() {
-        const { data, error } = await supabase
-            .from('category_general_view')
-            .select('category, total_inflow, total_outflow, num_of_transaction')
-            .eq('user_id', id)
-            .eq('category', category)
-
-        if (error)
-            throw error
-
-        if (data) {
-            setCount(data[0].num_of_transaction)
-            setAmount(data[0].total_outflow - data[0].total_inflow)
-        }
-
-    }
+    const transactionList = useCategoryTransactions(id, category)
+    const { transactionCount, amount } = useCategoryInfo(id, category)
 
     return (
         <View style={{ flex: 1 }}>
@@ -85,7 +37,7 @@ export default function CategoryDetail() {
                     fontSize: 16,
                     color: 'grey'
                 }}>
-                    {count} Transaksi
+                    {transactionCount} Transaksi
                 </Text>
 
                 {/* Total Spend Stat */}
@@ -101,12 +53,12 @@ export default function CategoryDetail() {
                     borderRadius: 12,
                     overflow: 'hidden'
                 }}>
-                    {list.map((transact, i) => (
+                    {transactionList.map((transact, i) => (
                         <Pressable
                             key={i}
                             style={({ pressed }) => [
                                 { padding: 14 },
-                                i == list.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
                         >

@@ -1,58 +1,13 @@
-import { View, Text, StyleSheet, Alert, ScrollView, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Card from '@/components/cards/card'
-import Divider from '@/components/divider'
+import { View, Text, ScrollView, Pressable } from 'react-native'
 import rupiah from '@/functions/rupiah'
 import { Link } from 'expo-router'
-import { supabase } from '@/lib/supabase'
-import { User } from '@supabase/supabase-js'
 import date from '@/functions/date'
-
-interface Transaction {
-    date: string,
-    type: string,
-    payee: string
-    category: string,
-    amount: number,
-    account: string
-}
+import { useUser } from '@/hooks/useUser'
+import { useTransactions } from '@/hooks/useTransactions'
 
 export default function TransactionTab() {
-    const [user, setUser] = useState<User | null>(null)
-    const [list, setList] = useState<Transaction[]>([])
-
-    // Check if user is authenticated
-    useEffect(() => {
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            if (user) {
-                setUser(user)
-            } else {
-                Alert.alert("Error Accessing User")
-            }
-        })
-    }, [])
-
-    useEffect(() => {
-        if (user) { // only call API when user is set
-            getTransaction()
-        }
-    }, [user]) // runs when 'user' changes
-
-    async function getTransaction() {
-        const { data, error } = await supabase
-            .from('transaction_view')
-            .select('date, type, payee, category, amount, account')
-            .eq('user_id', user?.id)
-            .order('date', { ascending: false })
-            .range(0, 4)
-
-        if (error)
-            throw error
-
-        if (data) {
-            setList(data)
-        }
-    }
+    const user = useUser()
+    const transactionList = useTransactions(user?.id)
 
     return (
         <View style={{
@@ -70,12 +25,12 @@ export default function TransactionTab() {
                     borderRadius: 12,
                     overflow: 'hidden'
                 }}>
-                    {list.map((transact, i) => (
+                    {transactionList.map((transact, i) => (
                         <Pressable
                             key={i}
                             style={({ pressed }) => [
                                 { padding: 14 },
-                                i == list.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                                i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                                 { backgroundColor: pressed ? 'lightgrey' : "white" }
                             ]}
                         >

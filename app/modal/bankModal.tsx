@@ -1,27 +1,16 @@
 import { View, Button, TextInput, StyleSheet, Alert } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { router, Stack } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { User } from '@supabase/supabase-js'
+import { useUser } from '@/hooks/useUser'
 
 export default function BankModal() {
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(false)
+    const user = useUser()
 
+    const [loading, setLoading] = useState(false)
     const [type, setType] = useState("")
     const [entity, setEntity] = useState("")
     const [amount, setAmount] = useState('')
-
-    // Check if user is authenticated
-    useEffect(() => {
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            if (user) {
-                setUser(user)
-            } else {
-                Alert.alert("Error Accessing User")
-            }
-        })
-    }, [])
 
     async function addTransaction() {
         setLoading(true)
