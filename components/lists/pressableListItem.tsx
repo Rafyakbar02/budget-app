@@ -7,10 +7,9 @@ type Props = {
     onPress: () => void
 };
 
-export default function PressableListItem({ children, key, lastItem, onPress }: Props) {
+export default function PressableListItem({ children, lastItem, onPress }: Props) {
     return (
         <Pressable
-            key={key}
             style={({ pressed }) => [
                 { padding: 14 },
                 lastItem && { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
