@@ -7,6 +7,9 @@ import { useUser } from '@/hooks/useUser'
 import { useAccounts } from '@/hooks/useAccounts'
 import { useCategories } from '@/hooks/useCategories'
 import { getTotalBalance, getTotalSpend } from '@/functions/financeUtils'
+import Heading from '@/components/heading'
+import PressableList from '@/components/lists/pressableList'
+import PressableListItem from '@/components/lists/pressableListItem'
 
 export default function HomeTab() {
     const user = useUser()
@@ -28,25 +31,14 @@ export default function HomeTab() {
                 {/* Total Spend Stat */}
                 <InfoCard label={"Total Pengeluaran"} value={rupiah(totalSpend)} />
 
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    marginVertical: 16
-                }}>Kategori Pengeluaran</Text>
+                <Heading>Kategori Pengeluaran</Heading>
 
-                <View style={{
-                    borderRadius: 12,
-                    overflow: 'hidden'
-                }}>
-                    {/* Category List Mapping */}
+                {/* List of Spending Category */}
+                <PressableList>
                     {categoryList.map((category, i) => (
-                        <Pressable
+                        <PressableListItem
                             key={i}
-                            style={({ pressed }) => [
-                                { padding: 14 },
-                                i == categoryList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                                { backgroundColor: pressed ? 'lightgrey' : "white" }
-                            ]}
+                            lastItem={i == categoryList.length - 1}
                             onPress={() => router.push({
                                 pathname: '/category/[id]',
                                 params: { id: user?.id as string, category: category.name }
@@ -62,9 +54,9 @@ export default function HomeTab() {
                                 </View>
                                 <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(category.amount)}</Text>
                             </View>
-                        </Pressable>
+                        </PressableListItem>
                     ))}
-                </View>
+                </PressableList>
 
                 {/* Gap */}
                 <View style={{ paddingVertical: 20 }}></View>
@@ -72,25 +64,14 @@ export default function HomeTab() {
                 {/* Total Balance Stat */}
                 <InfoCard label='Total Uang' value={rupiah(totalBalance)} />
 
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    marginVertical: 16,
-                }}>Rekening</Text>
+                <Heading>Rekening</Heading>
 
-                <View style={{
-                    borderRadius: 12,
-                    overflow: 'hidden'
-                }}>
-                    {/* Account List Mapping */}
+                {/* List of Accounts */}
+                <PressableList>
                     {accountList.map((acc, i) => (
-                        <Pressable
+                        <PressableListItem
                             key={i}
-                            style={({ pressed }) => [
-                                { padding: 14 },
-                                i == accountList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                                { backgroundColor: pressed ? 'lightgrey' : "white" }
-                            ]}
+                            lastItem={i == accountList.length - 1}
                             onPress={() => router.push({
                                 pathname: '/account/[id]',
                                 params: { id: user?.id as string, account: acc.account_name }
@@ -106,7 +87,7 @@ export default function HomeTab() {
                                 </View>
                                 <Text style={{ fontSize: 16, fontWeight: '500', textAlign: 'right', alignSelf: 'center' }}>{rupiah(acc.balance)}</Text>
                             </View>
-                        </Pressable>
+                        </PressableListItem>
                     ))}
 
                     {/* Add Account Button */}
@@ -115,7 +96,7 @@ export default function HomeTab() {
                         Tambah Rekening
                     </Link> */}
 
-                </View>
+                </PressableList>
 
                 {/* Gap margin for bottom of ScrollView */}
                 <View style={{ paddingVertical: 10 }}></View>

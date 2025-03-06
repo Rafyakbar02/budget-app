@@ -4,6 +4,9 @@ import { Link } from 'expo-router'
 import date from '@/functions/date'
 import { useUser } from '@/hooks/useUser'
 import { useTransactions } from '@/hooks/useTransactions'
+import Heading from '@/components/heading'
+import PressableList from '@/components/lists/pressableList'
+import PressableListItem from '@/components/lists/pressableListItem'
 
 export default function TransactionTab() {
     const user = useUser()
@@ -15,25 +18,12 @@ export default function TransactionTab() {
             flex: 1,
         }}>
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    marginVertical: 16
-                }}>Transaksi</Text>
+                <Heading>Transaksi</Heading>
 
-                <View style={{
-                    borderRadius: 12,
-                    overflow: 'hidden'
-                }}>
+                {/* List of Transactions */}
+                <PressableList>
                     {transactionList.map((transact, i) => (
-                        <Pressable
-                            key={i}
-                            style={({ pressed }) => [
-                                { padding: 14 },
-                                i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                                { backgroundColor: pressed ? 'lightgrey' : "white" }
-                            ]}
-                        >
+                        <PressableListItem key={i} lastItem={i == transactionList.length - 1} onPress={() => { return }}>
                             <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{date(transact.date)}</Text>
                             <View style={{
                                 flexDirection: 'row',
@@ -48,9 +38,9 @@ export default function TransactionTab() {
                                     <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
-                        </Pressable>
+                        </PressableListItem>
                     ))}
-                </View>
+                </PressableList>
 
                 {/* Add Button */}
                 <Link href={"/modal/transactionModal"} style={{ marginTop: 20, padding: 20, backgroundColor: 'white', fontWeight: 'bold', color: 'blue', borderRadius: 10, textAlign: 'center' }}>

@@ -6,6 +6,9 @@ import InfoCard from '@/components/cards/infoCard';
 import date from '@/functions/date';
 import { useAccountTransactions } from '@/hooks/useAccountTransactions';
 import { useAccountInfo } from '@/hooks/useAccountInfo';
+import Heading from '@/components/heading';
+import PressableList from '@/components/lists/pressableList';
+import PressableListItem from '@/components/lists/pressableListItem';
 
 export default function AccountDetail() {
     const { id, account } = useLocalSearchParams();
@@ -26,11 +29,7 @@ export default function AccountDetail() {
             }} />
 
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                    marginTop: 16
-                }}>{account}</Text>
+                <Heading size={"xl"}>{account}</Heading>
 
                 <Text style={{
                     marginTop: 4,
@@ -52,24 +51,14 @@ export default function AccountDetail() {
 
                 {transactionList.length > 0 &&
                     <>
-                        <Text style={{
-                            fontWeight: 'bold',
-                            fontSize: 20,
-                            marginVertical: 16
-                        }}>Transaksi</Text>
+                        <Heading>Transaksi</Heading>
 
-                        <View style={{
-                            borderRadius: 12,
-                            overflow: 'hidden'
-                        }}>
+                        <PressableList>
                             {transactionList.map((transact, i) => (
-                                <Pressable
+                                <PressableListItem
                                     key={i}
-                                    style={({ pressed }) => [
-                                        { padding: 14 },
-                                        i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                                        { backgroundColor: pressed ? 'lightgrey' : "white" }
-                                    ]}
+                                    lastItem={i == transactionList.length - 1}
+                                    onPress={() => { return }}
                                 >
                                     <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{date(transact.date)}</Text>
                                     <View style={{
@@ -94,9 +83,9 @@ export default function AccountDetail() {
                                             <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                         </View>
                                     </View>
-                                </Pressable>
+                                </PressableListItem>
                             ))}
-                        </View>
+                        </PressableList>
                     </>
                 }
 

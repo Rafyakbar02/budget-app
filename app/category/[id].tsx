@@ -6,6 +6,9 @@ import InfoCard from '@/components/cards/infoCard';
 import date from '@/functions/date';
 import { useCategoryTransactions } from '@/hooks/useCategoryTransactions';
 import { useCategoryInfo } from '@/hooks/useCategoryInfo';
+import Heading from '@/components/heading';
+import PressableList from '@/components/lists/pressableList';
+import PressableListItem from '@/components/lists/pressableListItem';
 
 export default function CategoryDetail() {
     const { id, category } = useLocalSearchParams();
@@ -25,11 +28,7 @@ export default function CategoryDetail() {
                 ),
             }} />
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                    marginTop: 16
-                }}>{category}</Text>
+                <Heading size='xl'>{category}</Heading>
 
                 <Text style={{
                     marginTop: 4,
@@ -43,24 +42,14 @@ export default function CategoryDetail() {
                 {/* Total Spend Stat */}
                 <InfoCard label='Total Pengeluaran' value={rupiah(amount)} />
 
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    marginVertical: 16
-                }}>Transaksi</Text>
+                <Heading>Transaksi</Heading>
 
-                <View style={{
-                    borderRadius: 12,
-                    overflow: 'hidden'
-                }}>
+                <PressableList>
                     {transactionList.map((transact, i) => (
-                        <Pressable
+                        <PressableListItem
                             key={i}
-                            style={({ pressed }) => [
-                                { padding: 14 },
-                                i == transactionList.length - 1 ? {} : { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                                { backgroundColor: pressed ? 'lightgrey' : "white" }
-                            ]}
+                            lastItem={i == transactionList.length - 1}
+                            onPress={() => { return }}
                         >
                             <Text style={{ fontSize: 14, marginBottom: 2, color: 'grey' }}>{date(transact.date)}</Text>
                             <View style={{
@@ -85,9 +74,9 @@ export default function CategoryDetail() {
                                     <Text style={{ fontSize: 14, textAlign: 'right', color: 'grey' }}>{transact.account}</Text>
                                 </View>
                             </View>
-                        </Pressable>
+                        </PressableListItem>
                     ))}
-                </View>
+                </PressableList>
 
             </ScrollView>
         </View>
