@@ -2,7 +2,6 @@ import { Pressable } from 'react-native'
 
 type Props = {
     children?: React.ReactNode,
-    key: number,
     lastItem: boolean,
     onPress: () => void
 };
