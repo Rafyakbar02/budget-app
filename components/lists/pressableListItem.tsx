@@ -12,7 +12,7 @@ export default function PressableListItem({ children, lastItem, onPress }: Props
         <Pressable
             style={({ pressed }) => [
                 { padding: 14 },
-                lastItem && { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
+                !lastItem && { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
                 { backgroundColor: pressed ? 'lightgrey' : 'white' }
             ]}
             onPress={onPress}
