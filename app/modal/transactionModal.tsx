@@ -1,9 +1,10 @@
-import { View, Button, TextInput, StyleSheet, Alert } from 'react-native'
+import { View, Button, TextInput, StyleSheet, Alert, Text } from 'react-native'
 import React, { useState } from 'react'
 import { router, Stack } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/hooks/useUser'
 import OptionList from '@/components/lists/optionList'
+import CurrencyInput from '@/components/currencyInput'
 
 export default function TransactionModal() {
     const user = useUser()
@@ -11,9 +12,11 @@ export default function TransactionModal() {
     const [loading, setLoading] = useState(false)
 
     const [type, setType] = useState("")
+    const [amount, setAmount] = useState(0)
+
     const [place, setPlace] = useState("")
     const [category, setCategory] = useState("")
-    const [amount, setAmount] = useState('')
+
     const [account, setAccount] = useState("")
 
     async function addTransaction() {
@@ -47,19 +50,6 @@ export default function TransactionModal() {
         setLoading(false)
     }
 
-    function amountChange(number: string) {
-        if (number.length < 2) {
-            setAmount(number)
-            return
-        }
-        if (number.charAt(0) == '0') {
-            setAmount('0')
-            return
-        }
-
-        setAmount(number)
-    }
-
     return (
         <View style={{ flex: 1 }}>
             <Stack.Screen
@@ -90,22 +80,21 @@ export default function TransactionModal() {
             />
 
             <View style={{ padding: 20 }}>
+                <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'center', gap: 5 }}>
+                    <Text style={{ fontSize: 45, fontWeight: 'bold' }}>Rp</Text>
+                    <CurrencyInput style={{ fontSize: 45, fontWeight: 'bold' }} value={amount} onChangeValue={setAmount} />
+                </View>
+
                 <View style={{
                     borderRadius: 12,
                     overflow: 'hidden',
                     backgroundColor: 'white'
                 }}>
-                    {/* Transaction Type */}
-                    <TextInput style={styles.input} placeholder='Type' placeholderTextColor={"grey"} value={type} onChangeText={setType} />
-
                     {/* Transaction Payee */}
                     <TextInput style={styles.input} placeholder='Location' placeholderTextColor={"grey"} value={place} onChangeText={setPlace} />
 
                     {/* Transaction Category */}
                     <TextInput style={styles.input} placeholder='Category' placeholderTextColor={"grey"} value={category} onChangeText={setCategory} />
-
-                    {/* Transaction Amount */}
-                    <TextInput style={styles.input} placeholder='Amount' placeholderTextColor={"grey"} value={amount} onChangeText={amountChange} inputMode='numeric' />
 
                     {/* Transaction Account */}
                     <TextInput style={{ height: 50, padding: 10 }} placeholder='Account' placeholderTextColor={"grey"} value={account} onChangeText={setAccount} />
