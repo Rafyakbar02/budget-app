@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { router, Stack } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/hooks/useUser'
+import OptionList from '@/components/lists/optionList'
 
 export default function TransactionModal() {
     const user = useUser()
@@ -79,6 +80,15 @@ export default function TransactionModal() {
                     )
                 }}
             />
+
+            <OptionList
+                options={
+                    ["Inflow", "Outflow"]
+                }
+                checkedValue={type}
+                onChange={setType}
+            />
+
             <View style={{ padding: 20 }}>
                 <View style={{
                     borderRadius: 12,
