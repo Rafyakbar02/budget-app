@@ -13,14 +13,6 @@ export default function RootLayout() {
 					headerShown: false
 				}}
 			/>
-			{/* <Stack.Screen
-				name="modal/bankModal"
-				options={{
-					presentation: 'modal',
-					title: "bank",
-				}}
-			/> */}
-			<Stack.Screen name="choose" />
 		</Stack>
 	)
 }
