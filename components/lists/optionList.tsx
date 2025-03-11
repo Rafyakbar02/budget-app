@@ -30,7 +30,7 @@ export default function OptionList({ options, checkedValue, onChange }: Props) {
                             onChange(option)
                         }}
                     >
-                        <Text style={{ textAlign: 'center' }}>{option}</Text>
+                        <Text style={{ textAlign: 'center', fontWeight: 500 }}>{option}</Text>
                     </Pressable>
                 )
             })}
