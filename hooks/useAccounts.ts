@@ -15,7 +15,7 @@ export function useAccounts(userID: string | undefined) {
         const fetchAccounts = async () => {
             const { data, error } = await supabase
                 .from('accounts')
-                .select('account_name, bank_name, balance')
+                .select('account_id, account_name, bank_name, balance')
                 .eq('user_id', userID)
                 .order('balance', { ascending: false })
 
