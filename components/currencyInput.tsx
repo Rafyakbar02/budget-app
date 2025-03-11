@@ -29,6 +29,6 @@ export default function CurrencyInput({ style, value, onChangeValue }: Prop) {
     }
 
     return (
-        <TextInput style={style} inputMode='numeric' value={currency(value)} onChangeText={handleChange} />
+        <TextInput style={style} inputMode='numeric' value={currency(value)} onChangeText={handleChange} returnKeyType='done' />
     )
 }
