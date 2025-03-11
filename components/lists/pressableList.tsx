@@ -6,7 +6,7 @@ type Props = {
 
 export default function PressableList({ children }: Props) {
     return (
-        <View style={{ borderRadius: 12, overflow: 'hidden' }}>
+        <View style={{ borderRadius: 12, overflow: 'hidden', backgroundColor: 'white' }}>
             {children}
         </View>
     )

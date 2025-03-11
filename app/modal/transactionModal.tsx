@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { useUser } from '@/hooks/useUser'
 import OptionList from '@/components/lists/optionList'
 import CurrencyInput from '@/components/currencyInput'
+import PressableList from '@/components/lists/pressableList'
 
 export default function TransactionModal() {
     const user = useUser()
@@ -85,11 +86,7 @@ export default function TransactionModal() {
                     <CurrencyInput style={{ fontSize: 45, fontWeight: 'bold' }} value={amount} onChangeValue={setAmount} />
                 </View>
 
-                <View style={{
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                    backgroundColor: 'white'
-                }}>
+                <PressableList>
                     {/* Transaction Payee */}
                     <TextInput style={styles.input} placeholder='Location' placeholderTextColor={"grey"} value={place} onChangeText={setPlace} />
 
@@ -98,7 +95,7 @@ export default function TransactionModal() {
 
                     {/* Transaction Account */}
                     <TextInput style={{ height: 50, padding: 10 }} placeholder='Account' placeholderTextColor={"grey"} value={account} onChangeText={setAccount} />
-                </View>
+                </PressableList>
             </View>
         </View>
     )
