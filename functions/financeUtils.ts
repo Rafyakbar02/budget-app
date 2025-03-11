@@ -1,11 +1,13 @@
 // interfaces for reusability
 export interface Account {
+    account_id: string,
     account_name: string;
     bank_name: string;
     balance: number;
 }
 
 export interface Category {
+    category_id: string,
     name: string;
     amount: number;
     num_of_transaction: number;
