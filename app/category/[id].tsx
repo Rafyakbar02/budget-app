@@ -1,5 +1,5 @@
 import { View, Text, Button, ScrollView, Pressable } from 'react-native'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import rupiah from '@/functions/rupiah';
 import InfoCard from '@/components/cards/infoCard';
@@ -9,12 +9,12 @@ import { useCategoryInfo } from '@/hooks/useCategoryInfo';
 import Heading from '@/components/heading';
 import PressableList from '@/components/lists/pressableList';
 import PressableListItem from '@/components/lists/pressableListItem';
+import { getTotalTransactionSpend } from '@/functions/financeUtils';
 
 export default function CategoryDetail() {
     const { id, category } = useLocalSearchParams();
-
     const transactionList = useCategoryTransactions(id, category)
-    const { transactionCount, amount } = useCategoryInfo(id, category)
+    const totalSpend = useMemo(() => getTotalTransactionSpend(transactionList), [transactionList])
 
     return (
         <View style={{ flex: 1 }}>
@@ -36,11 +36,11 @@ export default function CategoryDetail() {
                     fontSize: 16,
                     color: 'grey'
                 }}>
-                    {transactionCount} Transaksi
+                    {transactionList.length} Transaksi
                 </Text>
 
                 {/* Total Spend Stat */}
-                <InfoCard label='Total Pengeluaran' value={rupiah(amount)} />
+                <InfoCard label='Total Pengeluaran' value={rupiah(totalSpend)} />
 
                 <Heading>Transaksi</Heading>
 

@@ -32,6 +32,13 @@ export function getTotalBalance(accounts: Account[]): number {
 /**
  * Calculate total spending from an array of categories
  */
-export function getTotalSpend(categories: Category[]): number {
+export function getTotalCategorySpend(categories: Category[]): number {
     return categories.reduce((sum, category) => sum + category.amount, 0);
+}
+
+/**
+ * Calculate total spending from an array of transactions
+ */
+export function getTotalTransactionSpend(transactions: Transaction[]): number {
+    return transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
 }

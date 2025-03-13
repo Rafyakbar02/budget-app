@@ -5,7 +5,7 @@ import { router } from 'expo-router'
 import InfoCard from '@/components/cards/infoCard'
 import { useAccounts } from '@/hooks/useAccounts'
 import { useCategories } from '@/hooks/useCategories'
-import { getTotalBalance, getTotalSpend } from '@/functions/financeUtils'
+import { getTotalBalance, getTotalCategorySpend } from '@/functions/financeUtils'
 import Heading from '@/components/heading'
 import PressableList from '@/components/lists/pressableList'
 import PressableListItem from '@/components/lists/pressableListItem'
@@ -17,7 +17,7 @@ export default function HomeTab() {
     const categoryList = useCategories(user?.id)
 
     const totalBalance = useMemo(() => getTotalBalance(accountList), [accountList])
-    const totalSpend = useMemo(() => getTotalSpend(categoryList), [categoryList])
+    const totalSpend = useMemo(() => getTotalCategorySpend(categoryList), [categoryList])
 
     return (
         <View style={{
