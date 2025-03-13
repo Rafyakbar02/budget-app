@@ -8,15 +8,14 @@ type Props = {
     selected?: boolean
 };
 
-export default function PressableListItem({ children, lastItem = false, onPress, style, selected }: Props) {
+export default function PressableListItem({ children, lastItem = false, onPress, style, selected = false }: Props) {
     return (
         <Pressable
             style={({ pressed }) => [
                 { padding: 14 },
                 !lastItem && { borderBottomWidth: 1, borderBottomColor: 'lightgrey' },
-                { backgroundColor: pressed ? 'lightgrey' : '' },
+                { backgroundColor: pressed || selected ? 'lightgrey' : '' },
                 { style },
-                { backgroundColor: selected ? 'lightblue' : '' }
             ]}
             onPress={onPress}
         >
