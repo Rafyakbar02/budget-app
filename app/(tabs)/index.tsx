@@ -41,7 +41,7 @@ export default function HomeTab() {
                             lastItem={i == categoryList.length - 1}
                             onPress={() => router.push({
                                 pathname: '/category/[id]',
-                                params: { id: user?.id as string, category: category.name }
+                                params: { id: category.category_id }
                             })}
                         >
                             <View style={{
@@ -74,7 +74,7 @@ export default function HomeTab() {
                             lastItem={i == accountList.length - 1}
                             onPress={() => router.push({
                                 pathname: '/account/[id]',
-                                params: { id: user?.id as string, account: acc.account_name }
+                                params: { id: acc.account_id }
                             })}
                         >
                             <View style={{

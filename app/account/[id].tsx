@@ -10,13 +10,15 @@ import Heading from '@/components/heading';
 import PressableList from '@/components/lists/pressableList';
 import PressableListItem from '@/components/lists/pressableListItem';
 import { getTotalTransactionSpend } from '@/functions/financeUtils';
+import { useUser } from '@/context/UserContext';
 
 export default function AccountDetail() {
-    const { id, account } = useLocalSearchParams();
+    const user = useUser()
+    const { id } = useLocalSearchParams(); // accountId
 
-    const transactionList = useAccountTransactions(id, account)
-    const { transactionCount, amount, balance } = useAccountInfo(id, account)
-    const totalSpend = useMemo(() => getTotalTransactionSpend(transactionList), [transactionList])
+    const transactionList = useAccountTransactions(user?.id, id)
+    const { accountName, totalInflow, totalOutflow, balance, transactionCount } = useAccountInfo(user?.id, id)
+    const totalSpend = useMemo(() => totalOutflow - totalInflow, [transactionList])
 
     return (
         <View style={{ flex: 1 }}>
@@ -31,7 +33,7 @@ export default function AccountDetail() {
             }} />
 
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                <Heading size={"xl"}>{account}</Heading>
+                <Heading size={"xl"}>{accountName}</Heading>
 
                 <Text style={{
                     marginTop: 4,
@@ -39,7 +41,7 @@ export default function AccountDetail() {
                     fontSize: 16,
                     color: 'grey'
                 }}>
-                    {transactionList.length} Transaksi
+                    {transactionCount} Transaksi
                 </Text>
 
                 {/* Total Balance Stat */}

@@ -10,11 +10,15 @@ import Heading from '@/components/heading';
 import PressableList from '@/components/lists/pressableList';
 import PressableListItem from '@/components/lists/pressableListItem';
 import { getTotalTransactionSpend } from '@/functions/financeUtils';
+import { useUser } from '@/context/UserContext';
 
 export default function CategoryDetail() {
-    const { id, category } = useLocalSearchParams();
-    const transactionList = useCategoryTransactions(id, category)
-    const totalSpend = useMemo(() => getTotalTransactionSpend(transactionList), [transactionList])
+    const user = useUser()
+    const { id } = useLocalSearchParams(); // categoryId
+
+    const transactionList = useCategoryTransactions(user?.id, id)
+    const { categoryName, totalInflow, totalOutflow, transactionCount } = useCategoryInfo(user?.id, id)
+    const totalSpend = useMemo(() => totalOutflow - totalInflow, [transactionList])
 
     return (
         <View style={{ flex: 1 }}>
@@ -28,7 +32,7 @@ export default function CategoryDetail() {
                 ),
             }} />
             <ScrollView style={{ paddingHorizontal: 20 }}>
-                <Heading size='xl'>{category}</Heading>
+                <Heading size='xl'>{categoryName}</Heading>
 
                 <Text style={{
                     marginTop: 4,
@@ -36,7 +40,7 @@ export default function CategoryDetail() {
                     fontSize: 16,
                     color: 'grey'
                 }}>
-                    {transactionList.length} Transaksi
+                    {transactionCount} Transaksi
                 </Text>
 
                 {/* Total Spend Stat */}

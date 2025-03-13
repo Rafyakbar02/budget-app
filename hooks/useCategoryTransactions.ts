@@ -2,19 +2,19 @@ import { Transaction } from "@/functions/financeUtils"
 import { supabase } from "@/lib/supabase"
 import { useEffect, useState } from "react"
 
-export function useCategoryTransactions(userId: string | string[], category: string | string[]) {
+export function useCategoryTransactions(userId: string | undefined, categoryId: string | string[]) {
     const [transactionList, setTransactionList] = useState<Transaction[]>([])
 
     useEffect(() => {
-        if (!userId)
+        if (!userId || !categoryId)
             return
 
-        const fetchTransactions = async () => {
+        const fetchTransactionsByCategoryId = async () => {
             const { data, error } = await supabase
                 .from('transaction_view')
                 .select('date, type, payee, category, amount, account')
                 .eq('user_id', userId)
-                .eq('category', category)
+                .eq('category_id', categoryId)
                 .order('date', { ascending: false })
 
             if (error)
@@ -23,7 +23,7 @@ export function useCategoryTransactions(userId: string | string[], category: str
             setTransactionList(data)
         }
 
-        fetchTransactions()
+        fetchTransactionsByCategoryId()
 
     }, [userId])
 

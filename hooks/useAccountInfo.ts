@@ -1,28 +1,34 @@
 import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 
-export function useAccountInfo(userId: string | string[], account: string | string[]) {
+export function useAccountInfo(userId: string | undefined, accountId: string | string[]) {
+    const [accountName, setAccountName] = useState("")
+    const [bankName, setBankName] = useState("")
+    const [totalInflow, setTotalInflow] = useState(0)
+    const [totalOutflow, setTotalOutflow] = useState(0)
     const [transactionCount, setTransactionCount] = useState(0)
-    const [amount, setAmount] = useState(0)
     const [balance, setBalance] = useState(0)
 
     useEffect(() => {
-        if (!userId || !account)
+        if (!userId || !accountId)
             return
 
         const fetchAccountInfo = async () => {
             const { data, error } = await supabase
                 .from('account_general_view')
-                .select('total_inflow, total_outflow, num_of_transaction, balance')
+                .select('account_name, bank_name, total_inflow, total_outflow, num_of_transaction, balance')
                 .eq('user_id', userId)
-                .eq('account_name', account)
+                .eq('account_id', accountId)
 
             if (error)
                 throw error
 
             if (data) {
+                setAccountName(data[0].account_name)
+                setBankName(data[0].bank_name)
+                setTotalInflow(data[0].total_inflow)
+                setTotalOutflow(data[0].total_outflow)
                 setTransactionCount(data[0].num_of_transaction)
-                setAmount(data[0].total_outflow - data[0].total_inflow)
                 setBalance(data[0].balance)
             }
         }
@@ -31,5 +37,5 @@ export function useAccountInfo(userId: string | string[], account: string | stri
 
     }, [userId])
 
-    return { transactionCount, amount, balance }
+    return { accountName, bankName, totalInflow, totalOutflow, transactionCount, balance }
 }
