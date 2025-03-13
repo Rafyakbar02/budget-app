@@ -3,13 +3,13 @@ import React, { useMemo } from 'react'
 import rupiah from '@/functions/rupiah'
 import { router } from 'expo-router'
 import InfoCard from '@/components/cards/infoCard'
-import { useUser } from '@/hooks/useUser'
 import { useAccounts } from '@/hooks/useAccounts'
 import { useCategories } from '@/hooks/useCategories'
 import { getTotalBalance, getTotalSpend } from '@/functions/financeUtils'
 import Heading from '@/components/heading'
 import PressableList from '@/components/lists/pressableList'
 import PressableListItem from '@/components/lists/pressableListItem'
+import { useUser } from '@/context/UserContext'
 
 export default function HomeTab() {
     const user = useUser()
@@ -89,12 +89,6 @@ export default function HomeTab() {
                             </View>
                         </PressableListItem>
                     ))}
-
-                    {/* Add Account Button */}
-                    {/* <Divider />
-                    <Link href={"/modal/bankModal"} style={{ fontWeight: 'bold', color: 'blue', textAlign: 'center' }}>
-                        Tambah Rekening
-                    </Link> */}
 
                 </PressableList>
 

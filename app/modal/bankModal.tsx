@@ -2,7 +2,7 @@ import { View, Button, TextInput, StyleSheet, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { router, Stack } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { useUser } from '@/hooks/useUser'
+import { useUser } from '@/context/UserContext'
 
 export default function BankModal() {
     const user = useUser()

@@ -1,7 +1,7 @@
 import PressableList from '@/components/lists/pressableList'
 import PressableListItem from '@/components/lists/pressableListItem'
 import { useAccounts } from '@/hooks/useAccounts'
-import { useUser } from '@/hooks/useUser'
+import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
 
