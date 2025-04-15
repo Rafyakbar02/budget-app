@@ -51,7 +51,7 @@ export default function AccountDetail() {
                 <View style={{ paddingVertical: 10 }}></View>
 
                 {/* Total Spend Stat */}
-                <InfoCard label='Total Pengeluaran' value={rupiah(totalSpend)} />
+                {totalSpend > 0 && <InfoCard label='Total Pengeluaran' value={rupiah(totalSpend)} />}
 
                 {transactionList.length > 0 &&
                     <>
