@@ -4,11 +4,23 @@ import { useAccounts } from '@/hooks/useAccounts'
 import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
+import { Account } from '@/functions/financeUtils'
+import { useMemo } from 'react'
 
 export default function ChoosePayee() {
     const { selected } = useLocalSearchParams()
     const user = useUser()
     const accountList = useAccounts(user?.id)
+
+    const sortedAccount = useMemo(() => sortAccounts(accountList), [accountList])
+
+    function sortAccounts(list: Account[]) {
+        let sorted = [...list].sort((a, b) => {
+            return a.account_name.localeCompare(b.account_name)
+        })
+
+        return sorted
+    }
 
     return (
         <View>
@@ -43,10 +55,10 @@ export default function ChoosePayee() {
                 <View style={{ paddingVertical: 10 }}></View>
 
                 <PressableList>
-                    {accountList.map((item, i) => (
+                    {sortedAccount.map((item, i) => (
                         <PressableListItem
                             key={i}
-                            lastItem={i == accountList.length - 1}
+                            lastItem={i == sortedAccount.length - 1}
                             onPress={() => {
                                 router.back()
                                 router.setParams({ selectedAccount: item.account_name })

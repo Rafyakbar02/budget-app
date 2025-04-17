@@ -4,11 +4,24 @@ import { usePayees } from '@/hooks/usePayees'
 import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
+import { useMemo } from 'react'
+import { Payee } from '@/functions/financeUtils'
 
 export default function ChoosePayee() {
     const { selected } = useLocalSearchParams()
     const user = useUser()
     const payeeList = usePayees(user?.id)
+
+    const sortedPayee = useMemo(() => sortPayees(payeeList), [payeeList])
+
+    function sortPayees(list: Payee[]) {
+        let sorted = [...list].sort((a, b) => {
+            return a.payee.localeCompare(b.payee)
+        })
+
+        return sorted
+    }
+
 
     return (
         <View>
@@ -43,10 +56,10 @@ export default function ChoosePayee() {
                 <View style={{ paddingVertical: 10 }}></View>
 
                 <PressableList>
-                    {payeeList.map((item, i) => (
+                    {sortedPayee.map((item, i) => (
                         <PressableListItem
                             key={i}
-                            lastItem={i == payeeList.length - 1}
+                            lastItem={i == sortedPayee.length - 1}
                             onPress={() => {
                                 router.back()
                                 router.setParams({ selectedPayee: item.payee })

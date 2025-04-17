@@ -22,6 +22,10 @@ export interface Transaction {
     account: string
 }
 
+export interface Payee {
+    payee: string
+}
+
 /**
  * Calculate total balance from an array of accounts
  */

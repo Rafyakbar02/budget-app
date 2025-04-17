@@ -4,11 +4,23 @@ import { useCategories } from '@/hooks/useCategories'
 import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
+import { Category } from '@/functions/financeUtils'
+import { useMemo } from 'react'
 
 export default function ChoosePayee() {
     const { selected } = useLocalSearchParams()
     const user = useUser()
     const categoryList = useCategories(user?.id)
+
+    const sortedCategory = useMemo(() => sortCategories(categoryList), [categoryList])
+
+    function sortCategories(list: Category[]) {
+        let sorted = [...list].sort((a, b) => {
+            return a.name.localeCompare(b.name)
+        })
+
+        return sorted
+    }
 
     return (
         <View>
@@ -43,10 +55,10 @@ export default function ChoosePayee() {
                 <View style={{ paddingVertical: 10 }}></View>
 
                 <PressableList>
-                    {categoryList.map((item, i) => (
+                    {sortedCategory.map((item, i) => (
                         <PressableListItem
                             key={i}
-                            lastItem={i == categoryList.length - 1}
+                            lastItem={i == sortedCategory.length - 1}
                             onPress={() => {
                                 router.back()
                                 router.setParams({ selectedCategory: item.name })
