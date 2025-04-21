@@ -7,6 +7,8 @@ import OptionList from '@/components/lists/optionList'
 import CurrencyInput from '@/components/currencyInput'
 import PressableList from '@/components/lists/pressableList'
 import PressableListItem from '@/components/lists/pressableListItem'
+import { getCategoryID } from '@/functions/getCategoryID'
+import { getAccountID } from '@/functions/getAccountID'
 
 export default function TransactionModal() {
     const user = useUser()
@@ -31,11 +33,14 @@ export default function TransactionModal() {
     async function addTransaction() {
         setLoading(true)
 
-        if (!type || !payee || !category || !amount || !amount || !account) {
+        if (!type || !amount || !payee || !category || !account) {
             Alert.alert("Fill the info")
             setLoading(false)
+
             return
         }
+
+        // console.log("Passed Info Check")
 
         if (!user) {
             Alert.alert("Error Accessing User")
@@ -43,12 +48,27 @@ export default function TransactionModal() {
             return
         }
 
+        // console.log("Passed User Check")
+
+        let category_id = await getCategoryID(user.id, category)
+        let account_id = await getAccountID(user.id, account)
+
         const { error } = await supabase
-            .from('transaction')
+            .from('transactions')
             .insert([
-                { user_id: user?.id, transaction_date: new Date(), transaction_type: type, payee: payee, category_id: category, amount: amount, account_id: account }
+                {
+                    user_id: user?.id,
+                    category_id: category_id,
+                    account_id: account_id,
+                    amount: amount,
+                    transaction_type: type,
+                    transaction_date: new Date(),
+                    payee: payee
+                }
             ])
             .select()
+
+        // console.log("Done")
 
         if (error) {
             Alert.alert(error.message)
@@ -74,8 +94,7 @@ export default function TransactionModal() {
                         <Button
                             onPress={() => addTransaction()}
                             title="Done"
-                            // disabled={loading}
-                            disabled={true}
+                            disabled={loading}
                         />
                     )
                 }}
