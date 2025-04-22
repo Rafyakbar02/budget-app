@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import rupiah from '@/functions/rupiah'
 import { Link } from 'expo-router'
 import date from '@/functions/date'

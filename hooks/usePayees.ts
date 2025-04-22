@@ -24,7 +24,8 @@ export function usePayees(userID: string | undefined) {
             if (error)
                 throw error
 
-            setPayeeList(data)
+            let unique = [...new Set(data)]
+            setPayeeList(unique)
         }
 
         fetchPayees()

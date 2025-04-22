@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React, { useMemo } from 'react'
 import rupiah from '@/functions/rupiah'
 import { router } from 'expo-router'

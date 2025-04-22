@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase"
-import { useEffect, useState } from "react"
 
 /**
  * Fetch user bank accounts, load to accountList and calculate sum of total balance

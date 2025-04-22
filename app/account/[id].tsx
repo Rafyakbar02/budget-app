@@ -1,4 +1,4 @@
-import { View, Text, Button, ScrollView, Pressable } from 'react-native'
+import { View, Text, Button, ScrollView } from 'react-native'
 import React, { useMemo } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import rupiah from '@/functions/rupiah';
@@ -9,7 +9,6 @@ import { useAccountInfo } from '@/hooks/useAccountInfo';
 import Heading from '@/components/heading';
 import PressableList from '@/components/lists/pressableList';
 import PressableListItem from '@/components/lists/pressableListItem';
-import { getTotalTransactionSpend } from '@/functions/financeUtils';
 import { useUser } from '@/context/UserContext';
 
 export default function AccountDetail() {

@@ -5,7 +5,7 @@ import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
 import { Category } from '@/functions/financeUtils'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export default function ChoosePayee() {
     const { selected } = useLocalSearchParams()

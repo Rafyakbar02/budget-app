@@ -1,6 +1,6 @@
-import { View, Button, TextInput, StyleSheet, Alert, Text } from 'react-native'
+import { View, Button, StyleSheet, Alert, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { router, Stack, useLocalSearchParams, useRouter } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/context/UserContext'
 import OptionList from '@/components/lists/optionList'

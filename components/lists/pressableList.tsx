@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native'
+import { View } from 'react-native'
 
 type Props = {
     children?: React.ReactNode
