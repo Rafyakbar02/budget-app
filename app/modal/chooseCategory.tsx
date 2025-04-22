@@ -5,14 +5,19 @@ import { useUser } from '@/context/UserContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { View, Text, Button, ScrollView, TextInput } from 'react-native'
 import { Category } from '@/functions/financeUtils'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function ChoosePayee() {
     const { selected } = useLocalSearchParams()
     const user = useUser()
     const categoryList = useCategories(user?.id)
 
-    const sortedCategory = useMemo(() => sortCategories(categoryList), [categoryList])
+    const [search, setSearch] = useState("")
+
+    // const sortedCategory = useMemo(() => sortCategories(categoryList), [categoryList])
+    const filteredCategory = useMemo(() =>
+        search === "" ? sortCategories(categoryList) : sortCategories(categoryList.filter(cat => cat.name.toLowerCase().includes(search.toLowerCase())))
+        , [search, categoryList])
 
     function sortCategories(list: Category[]) {
         let sorted = [...list].sort((a, b) => {
@@ -49,16 +54,27 @@ export default function ChoosePayee() {
                     }}
                     placeholder='Find or add category'
                     placeholderTextColor={"grey"}
+                    onChangeText={(text) => setSearch(text)}
                 ></TextInput>
 
                 {/* Gap */}
                 <View style={{ paddingVertical: 10 }}></View>
 
                 <PressableList>
-                    {sortedCategory.map((item, i) => (
+                    {search && <PressableListItem
+                        lastItem={filteredCategory.length > 0 ? false : true}
+                        onPress={() => {
+                            router.back()
+                            router.setParams({ selectedCategory: search })
+                        }}
+                    >
+                        <Text style={{ fontWeight: 500, fontSize: 16, padding: 5, color: 'blue' }}>Create "{search}" Category</Text>
+                    </PressableListItem>}
+
+                    {filteredCategory.map((item, i) => (
                         <PressableListItem
                             key={i}
-                            lastItem={i == sortedCategory.length - 1}
+                            lastItem={i == filteredCategory.length - 1}
                             onPress={() => {
                                 router.back()
                                 router.setParams({ selectedCategory: item.name })

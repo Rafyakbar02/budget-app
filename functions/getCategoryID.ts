@@ -12,8 +12,26 @@ export async function getCategoryID(userId: string | undefined, categoryName: st
         .eq('name', categoryName)
         .single()
 
-    if (error)
+    if (error) {
+        return
+    }
+
+    return data.category_id
+}
+
+export async function addCategory(userId: string, categoryName: string | string[]) {
+    const { data, error } = await supabase
+        .from('categories')
+        .upsert({
+            user_id: userId,
+            name: categoryName,
+        })
+        .select('category_id')
+        .single()
+
+    if (error) {
         throw error
+    }
 
     return data.category_id
 }

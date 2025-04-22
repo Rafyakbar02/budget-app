@@ -7,7 +7,7 @@ import OptionList from '@/components/lists/optionList'
 import CurrencyInput from '@/components/currencyInput'
 import PressableList from '@/components/lists/pressableList'
 import PressableListItem from '@/components/lists/pressableListItem'
-import { getCategoryID } from '@/functions/getCategoryID'
+import { addCategory, getCategoryID } from '@/functions/getCategoryID'
 import { getAccountID } from '@/functions/getAccountID'
 
 export default function TransactionModal() {
@@ -51,6 +51,11 @@ export default function TransactionModal() {
         // console.log("Passed User Check")
 
         let category_id = await getCategoryID(user.id, category)
+
+        if (!category_id) {
+            category_id = await addCategory(user.id, category)
+        }
+
         let account_id = await getAccountID(user.id, account)
 
         const { error } = await supabase
@@ -61,7 +66,7 @@ export default function TransactionModal() {
                     category_id: category_id,
                     account_id: account_id,
                     amount: amount,
-                    transaction_type: type,
+                    transaction_type: type.toLowerCase(),
                     transaction_date: new Date(),
                     payee: payee
                 }
